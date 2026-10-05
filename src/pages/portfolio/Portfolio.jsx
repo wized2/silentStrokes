@@ -42,9 +42,11 @@ const Portfolio = () => {
   // On smaller viewports the room is drawn tighter so the same artworks fill a
   // portrait screen and both rows stay in view; the drag-to-pan interaction is
   // otherwise identical.
-  const radius = isMobile ? 2200 : 3200;
-  const angleSpacing = 15;
-  const rowOffsetPx = isMobile ? 300 : 450;
+  // Mobile: slightly smaller radius + tighter angular spacing so pieces sit closer
+  // without changing desktop geometry.
+  const radius = isMobile ? 1850 : 3200;
+  const angleSpacing = isMobile ? 13 : 15;
+  const rowOffsetPx = isMobile ? 240 : 450;
 
   // The artworks occupy one arc of the cylinder. Tiling that arc around the full
   // 360° means panning past the last piece wraps back to the first instead of
@@ -192,7 +194,7 @@ const Portfolio = () => {
                   }}
                 >
                   <div
-                    className={`bg-[#FAFAFA] p-3 md:p-5 shadow-[0_40px_80px_rgba(43,48,36,0.15)] transition-transform duration-700 pointer-events-auto cursor-pointer ${!isFocused && 'hover:-translate-y-4 hover:scale-[1.04]'}`}
+                    className={`bg-[#FAFAFA] p-2 sm:p-3 md:p-5 shadow-[0_40px_80px_rgba(43,48,36,0.15)] transition-transform duration-700 pointer-events-auto cursor-pointer ${!isFocused && 'hover:-translate-y-4 hover:scale-[1.04]'}`}
 
                     onPointerDown={(e) => {
                       e.stopPropagation();
@@ -216,7 +218,7 @@ const Portfolio = () => {
                     <img
                       src={art.img}
                       alt={art.title || "Artwork"}
-                      className="w-auto h-[300px] sm:h-[380px] md:h-[450px] lg:h-[600px] max-w-[80vw] shadow-inner pointer-events-none"
+                      className="block w-auto max-w-[min(72vw,280px)] sm:max-w-[min(70vw,340px)] md:max-w-none h-auto max-h-[260px] sm:max-h-[340px] md:max-h-[450px] lg:max-h-[600px] object-contain shadow-inner pointer-events-none"
                       draggable="false"
                       decoding="async"
                     />

@@ -2,17 +2,17 @@ import React, { useState, useRef, useEffect } from 'react';
 
 // --- DATA: 8 Photographs without forced ratios or titles ---
 const scatterItems = [
-  // Top Row (Tidy)
-  { id: 'p1', src: '/about/photos/photo1.png', initX: -320, initY: -120, rot: -12, tidyX: -360, tidyY: -170 },
-  { id: 'p2', src: '/about/photos/photo2.png', initX: -80, initY: -160, rot: 5, tidyX: -120, tidyY: -170 },
-  { id: 'p3', src: '/about/photos/photo3.png', initX: 180, initY: -140, rot: 15, tidyX: 120, tidyY: -170 },
-  { id: 'p4', src: '/about/photos/photo4.png', initX: 340, initY: -80, rot: -8, tidyX: 360, tidyY: -170 },
-  
+  // Top Row (Tidy) — mobile* coords used below 1024px for balanced spacing
+  { id: 'p1', src: '/about/photos/photo1.png', initX: -320, initY: -120, rot: -12, tidyX: -360, tidyY: -170, mobileInitX: -118, mobileInitY: -150, mobileTidyX: -120, mobileTidyY: -160 },
+  { id: 'p2', src: '/about/photos/photo2.png', initX: -80, initY: -160, rot: 5, tidyX: -120, tidyY: -170, mobileInitX: -28, mobileInitY: -175, mobileTidyX: -40, mobileTidyY: -160 },
+  { id: 'p3', src: '/about/photos/photo3.png', initX: 180, initY: -140, rot: 15, tidyX: 120, tidyY: -170, mobileInitX: 70, mobileInitY: -155, mobileTidyX: 40, mobileTidyY: -160 },
+  { id: 'p4', src: '/about/photos/photo4.png', initX: 340, initY: -80, rot: -8, tidyX: 360, tidyY: -170, mobileInitX: 120, mobileInitY: -130, mobileTidyX: 120, mobileTidyY: -160 },
+
   // Bottom Row (Tidy)
-  { id: 'p5', src: '/about/photos/photo5.png', initX: -290, initY: 150, rot: 20, tidyX: -360, tidyY: 170 },
-  { id: 'p6', src: '/about/photos/photo6.png', initX: -40, initY: 180, rot: -5, tidyX: -120, tidyY: 170 },
-  { id: 'p7', src: '/about/photos/photo7.png', initX: 220, initY: 160, rot: 8, tidyX: 120, tidyY: 170 },
-  { id: 'p8', src: '/about/photos/photo8.png', initX: 360, initY: 120, rot: -14, tidyX: 360, tidyY: 170 },
+  { id: 'p5', src: '/about/photos/photo5.png', initX: -290, initY: 150, rot: 20, tidyX: -360, tidyY: 170, mobileInitX: -110, mobileInitY: 130, mobileTidyX: -120, mobileTidyY: 150 },
+  { id: 'p6', src: '/about/photos/photo6.png', initX: -40, initY: 180, rot: -5, tidyX: -120, tidyY: 170, mobileInitX: -20, mobileInitY: 160, mobileTidyX: -40, mobileTidyY: 150 },
+  { id: 'p7', src: '/about/photos/photo7.png', initX: 220, initY: 160, rot: 8, tidyX: 120, tidyY: 170, mobileInitX: 75, mobileInitY: 145, mobileTidyX: 40, mobileTidyY: 150 },
+  { id: 'p8', src: '/about/photos/photo8.png', initX: 360, initY: 120, rot: -14, tidyX: 360, tidyY: 170, mobileInitX: 118, mobileInitY: 125, mobileTidyX: 120, mobileTidyY: 150 },
 ];
 
 // --- UNIVERSAL PHYSICS DRAGGABLE COMPONENT ---
@@ -34,11 +34,22 @@ const DraggableItem = ({ item, setTopIndex, baseZ, isTidy }) => {
     }
   };
 
+  const pickPos = (mode) => {
+    const mobile = typeof window !== 'undefined' && window.innerWidth < 1024;
+    if (mobile) {
+      if (mode === 'tidy') {
+        return { x: item.mobileTidyX ?? item.tidyX * 0.35, y: item.mobileTidyY ?? item.tidyY * 0.35 };
+      }
+      return { x: item.mobileInitX ?? item.initX * 0.35, y: item.mobileInitY ?? item.initY * 0.35 };
+    }
+    if (mode === 'tidy') return { x: item.tidyX, y: item.tidyY };
+    return { x: item.initX, y: item.initY };
+  };
+
   useEffect(() => {
-    const mult = window.innerWidth < 1024 ? 0.4 : 1;
-    offset.current = { x: item.initX * mult, y: item.initY * mult };
+    offset.current = pickPos('scatter');
     updateStyle();
-  }, [item.initX, item.initY]);
+  }, [item.initX, item.initY, item.mobileInitX, item.mobileInitY]);
 
   useEffect(() => {
     if (isDragging.current) return; 
@@ -46,13 +57,11 @@ const DraggableItem = ({ item, setTopIndex, baseZ, isTidy }) => {
     cancelAnimationFrame(raf.current);
     if (cardRef.current) cardRef.current.style.transition = 'transform 0.8s cubic-bezier(0.25, 1, 0.2, 1)';
     
-    const mult = window.innerWidth < 1024 ? 0.4 : 1;
-    
     if (isTidy) {
-      offset.current = { x: item.tidyX * mult, y: item.tidyY * mult };
+      offset.current = pickPos('tidy');
       rot.current = 0;
     } else {
-      offset.current = { x: item.initX * mult, y: item.initY * mult };
+      offset.current = pickPos('scatter');
       rot.current = item.rot;
     }
     
@@ -152,7 +161,7 @@ const DraggableItem = ({ item, setTopIndex, baseZ, isTidy }) => {
       className="absolute top-1/2 left-1/2 p-2 sm:p-3 bg-[#FAFAFA] shadow-lg border border-[#DCD9CE] touch-none cursor-grab"
       style={{
         zIndex,
-        width: 'clamp(128px, 34vw, 260px)',
+        width: 'clamp(100px, 28vw, 220px)',
         transformOrigin: 'center center'
       }}
     >
