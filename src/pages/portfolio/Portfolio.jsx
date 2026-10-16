@@ -44,9 +44,9 @@ const Portfolio = () => {
   // otherwise identical.
   // Mobile: slightly smaller radius + tighter angular spacing so pieces sit closer
   // without changing desktop geometry.
-  const radius = isMobile ? 1850 : 3200;
-  const angleSpacing = isMobile ? 13 : 15;
-  const rowOffsetPx = isMobile ? 240 : 450;
+  const radius = isMobile ? 1550 : 3200;
+  const angleSpacing = isMobile ? 11 : 15;
+  const rowOffsetPx = isMobile ? 200 : 450;
 
   // The artworks occupy one arc of the cylinder. Tiling that arc around the full
   // 360° means panning past the last piece wraps back to the first instead of

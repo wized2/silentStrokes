@@ -2,17 +2,16 @@ import React, { useState, useRef, useEffect } from 'react';
 
 // --- DATA: 8 Photographs without forced ratios or titles ---
 const scatterItems = [
-  // Top Row (Tidy) — mobile* coords used below 1024px for balanced spacing
-  { id: 'p1', src: '/about/photos/photo1.png', initX: -320, initY: -120, rot: -12, tidyX: -360, tidyY: -170, mobileInitX: -118, mobileInitY: -150, mobileTidyX: -120, mobileTidyY: -160 },
-  { id: 'p2', src: '/about/photos/photo2.png', initX: -80, initY: -160, rot: 5, tidyX: -120, tidyY: -170, mobileInitX: -28, mobileInitY: -175, mobileTidyX: -40, mobileTidyY: -160 },
-  { id: 'p3', src: '/about/photos/photo3.png', initX: 180, initY: -140, rot: 15, tidyX: 120, tidyY: -170, mobileInitX: 70, mobileInitY: -155, mobileTidyX: 40, mobileTidyY: -160 },
-  { id: 'p4', src: '/about/photos/photo4.png', initX: 340, initY: -80, rot: -8, tidyX: 360, tidyY: -170, mobileInitX: 120, mobileInitY: -130, mobileTidyX: 120, mobileTidyY: -160 },
-
-  // Bottom Row (Tidy)
-  { id: 'p5', src: '/about/photos/photo5.png', initX: -290, initY: 150, rot: 20, tidyX: -360, tidyY: 170, mobileInitX: -110, mobileInitY: 130, mobileTidyX: -120, mobileTidyY: 150 },
-  { id: 'p6', src: '/about/photos/photo6.png', initX: -40, initY: 180, rot: -5, tidyX: -120, tidyY: 170, mobileInitX: -20, mobileInitY: 160, mobileTidyX: -40, mobileTidyY: 150 },
-  { id: 'p7', src: '/about/photos/photo7.png', initX: 220, initY: 160, rot: 8, tidyX: 120, tidyY: 170, mobileInitX: 75, mobileInitY: 145, mobileTidyX: 40, mobileTidyY: 150 },
-  { id: 'p8', src: '/about/photos/photo8.png', initX: 360, initY: 120, rot: -14, tidyX: 360, tidyY: 170, mobileInitX: 118, mobileInitY: 125, mobileTidyX: 120, mobileTidyY: 150 },
+  // Desktop init/tidy unchanged. mobile* only used below 1024px.
+  // Scatter: irregular positions. Tidy: 2×4 grid gaps so cards do not overlap.
+  { id: 'p1', src: '/about/photos/photo1.png', initX: -320, initY: -120, rot: -12, tidyX: -360, tidyY: -170, mobileInitX: -95, mobileInitY: -188, mobileTidyX: -105, mobileTidyY: -155 },
+  { id: 'p2', src: '/about/photos/photo2.png', initX: -80, initY: -160, rot: 5, tidyX: -120, tidyY: -170, mobileInitX: 12, mobileInitY: -205, mobileTidyX: -35, mobileTidyY: -155 },
+  { id: 'p3', src: '/about/photos/photo3.png', initX: 180, initY: -140, rot: 15, tidyX: 120, tidyY: -170, mobileInitX: -55, mobileInitY: -95, mobileTidyX: 35, mobileTidyY: -155 },
+  { id: 'p4', src: '/about/photos/photo4.png', initX: 340, initY: -80, rot: -8, tidyX: 360, tidyY: -170, mobileInitX: 108, mobileInitY: -160, mobileTidyX: 105, mobileTidyY: -155 },
+  { id: 'p5', src: '/about/photos/photo5.png', initX: -290, initY: 150, rot: 20, tidyX: -360, tidyY: 170, mobileInitX: -125, mobileInitY: 85, mobileTidyX: -105, mobileTidyY: 155 },
+  { id: 'p6', src: '/about/photos/photo6.png', initX: -40, initY: 180, rot: -5, tidyX: -120, tidyY: 170, mobileInitX: 45, mobileInitY: 175, mobileTidyX: -35, mobileTidyY: 155 },
+  { id: 'p7', src: '/about/photos/photo7.png', initX: 220, initY: 160, rot: 8, tidyX: 120, tidyY: 170, mobileInitX: -10, mobileInitY: 115, mobileTidyX: 35, mobileTidyY: 155 },
+  { id: 'p8', src: '/about/photos/photo8.png', initX: 360, initY: 120, rot: -14, tidyX: 360, tidyY: 170, mobileInitX: 130, mobileInitY: 95, mobileTidyX: 105, mobileTidyY: 155 },
 ];
 
 // --- UNIVERSAL PHYSICS DRAGGABLE COMPONENT ---

@@ -22,7 +22,7 @@ const getWireY = (x, wireIndex, mobile = false) => {
 // x positions of the five frames along the wall. Desktop keeps the original
 // asymmetric spread; on narrow screens frames are staggered with more breathing room.
 const DESKTOP_XS = [35, 50, 65, 80, 92];
-const MOBILE_XS = [14, 32, 50, 68, 86];
+const MOBILE_XS = [10, 28, 46, 64, 82];
 
 const buildFrames = (xs, mobile = false) => [
   { id: 1, img: "/artworks/comission3.png", x: xs[0], y: getWireY(xs[0], 0, mobile), rot: -4, z: 10, isInspecting: false },
@@ -142,7 +142,7 @@ const HeroSlider = () => {
           // Ensure inspected items pop over the text box, but dragged items stay under
           zIndex: frame.isInspecting ? 9999 : frame.z,
 
-          width: isMobile ? "clamp(88px, 26vw, 132px)" : "clamp(120px, 12vw, 220px)",
+          width: isMobile ? "clamp(100px, 30vw, 148px)" : "clamp(120px, 12vw, 220px)",
           aspectRatio: "4/5",
 
           // Only the painting itself locks touch gestures, so a drag on a frame
