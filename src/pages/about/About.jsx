@@ -2,16 +2,16 @@ import React, { useState, useRef, useEffect } from 'react';
 
 // --- DATA: 8 Photographs without forced ratios or titles ---
 const scatterItems = [
-  // Desktop init/tidy unchanged. mobile* only used below 1024px.
-  // Scatter: irregular positions. Tidy: 2×4 grid gaps so cards do not overlap.
-  { id: 'p1', src: '/about/photos/photo1.png', initX: -320, initY: -120, rot: -12, tidyX: -360, tidyY: -170, mobileInitX: -95, mobileInitY: -188, mobileTidyX: -105, mobileTidyY: -155 },
-  { id: 'p2', src: '/about/photos/photo2.png', initX: -80, initY: -160, rot: 5, tidyX: -120, tidyY: -170, mobileInitX: 12, mobileInitY: -205, mobileTidyX: -35, mobileTidyY: -155 },
-  { id: 'p3', src: '/about/photos/photo3.png', initX: 180, initY: -140, rot: 15, tidyX: 120, tidyY: -170, mobileInitX: -55, mobileInitY: -95, mobileTidyX: 35, mobileTidyY: -155 },
-  { id: 'p4', src: '/about/photos/photo4.png', initX: 340, initY: -80, rot: -8, tidyX: 360, tidyY: -170, mobileInitX: 108, mobileInitY: -160, mobileTidyX: 105, mobileTidyY: -155 },
-  { id: 'p5', src: '/about/photos/photo5.png', initX: -290, initY: 150, rot: 20, tidyX: -360, tidyY: 170, mobileInitX: -125, mobileInitY: 85, mobileTidyX: -105, mobileTidyY: 155 },
-  { id: 'p6', src: '/about/photos/photo6.png', initX: -40, initY: 180, rot: -5, tidyX: -120, tidyY: 170, mobileInitX: 45, mobileInitY: 175, mobileTidyX: -35, mobileTidyY: 155 },
-  { id: 'p7', src: '/about/photos/photo7.png', initX: 220, initY: 160, rot: 8, tidyX: 120, tidyY: 170, mobileInitX: -10, mobileInitY: 115, mobileTidyX: 35, mobileTidyY: 155 },
-  { id: 'p8', src: '/about/photos/photo8.png', initX: 360, initY: 120, rot: -14, tidyX: 360, tidyY: 170, mobileInitX: 130, mobileInitY: 95, mobileTidyX: 105, mobileTidyY: 155 },
+  // Scatter: irregular. Tidy: 2×4 grid — spacing must exceed card width
+  // (cards use clamp(100px, 28vw, 220px)). mobile* only below 768px.
+  { id: 'p1', src: '/about/photos/photo1.png', initX: -320, initY: -120, rot: -12, tidyX: -390, tidyY: -210, mobileInitX: -95, mobileInitY: -188, mobileTidyX: -168, mobileTidyY: -175 },
+  { id: 'p2', src: '/about/photos/photo2.png', initX: -80, initY: -160, rot: 5, tidyX: -130, tidyY: -210, mobileInitX: 12, mobileInitY: -205, mobileTidyX: -56, mobileTidyY: -175 },
+  { id: 'p3', src: '/about/photos/photo3.png', initX: 180, initY: -140, rot: 15, tidyX: 130, tidyY: -210, mobileInitX: -55, mobileInitY: -95, mobileTidyX: 56, mobileTidyY: -175 },
+  { id: 'p4', src: '/about/photos/photo4.png', initX: 340, initY: -80, rot: -8, tidyX: 390, tidyY: -210, mobileInitX: 108, mobileInitY: -160, mobileTidyX: 168, mobileTidyY: -175 },
+  { id: 'p5', src: '/about/photos/photo5.png', initX: -290, initY: 150, rot: 20, tidyX: -390, tidyY: 210, mobileInitX: -125, mobileInitY: 85, mobileTidyX: -168, mobileTidyY: 175 },
+  { id: 'p6', src: '/about/photos/photo6.png', initX: -40, initY: 180, rot: -5, tidyX: -130, tidyY: 210, mobileInitX: 45, mobileInitY: 175, mobileTidyX: -56, mobileTidyY: 175 },
+  { id: 'p7', src: '/about/photos/photo7.png', initX: 220, initY: 160, rot: 8, tidyX: 130, tidyY: 210, mobileInitX: -10, mobileInitY: 115, mobileTidyX: 56, mobileTidyY: 175 },
+  { id: 'p8', src: '/about/photos/photo8.png', initX: 360, initY: 120, rot: -14, tidyX: 390, tidyY: 210, mobileInitX: 130, mobileInitY: 95, mobileTidyX: 168, mobileTidyY: 175 },
 ];
 
 // --- UNIVERSAL PHYSICS DRAGGABLE COMPONENT ---
@@ -34,7 +34,7 @@ const DraggableItem = ({ item, setTopIndex, baseZ, isTidy }) => {
   };
 
   const pickPos = (mode) => {
-    const mobile = typeof window !== 'undefined' && window.innerWidth < 1024;
+    const mobile = typeof window !== 'undefined' && window.innerWidth < 768;
     if (mobile) {
       if (mode === 'tidy') {
         return { x: item.mobileTidyX ?? item.tidyX * 0.35, y: item.mobileTidyY ?? item.tidyY * 0.35 };
@@ -160,7 +160,7 @@ const DraggableItem = ({ item, setTopIndex, baseZ, isTidy }) => {
       className="absolute top-1/2 left-1/2 p-2 sm:p-3 bg-[#FAFAFA] shadow-lg border border-[#DCD9CE] touch-none cursor-grab"
       style={{
         zIndex,
-        width: 'clamp(100px, 28vw, 220px)',
+        width: 'clamp(96px, 26vw, 200px)',
         transformOrigin: 'center center'
       }}
     >
