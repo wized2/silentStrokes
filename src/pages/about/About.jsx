@@ -2,16 +2,16 @@ import React, { useState, useRef, useEffect } from 'react';
 
 // --- DATA: 8 Photographs without forced ratios or titles ---
 const scatterItems = [
-  // Desktop init/tidy match main. mobile* used only below 768px.
-  // Mobile scatter is irregular; mobile tidy is a non-overlapping 2×4 grid.
-  { id: 'p1', src: '/about/photos/photo1.png', initX: -320, initY: -120, rot: -12, tidyX: -360, tidyY: -170, mobileInitX: -118, mobileInitY: -210, mobileRot: -18, mobileTidyX: -150, mobileTidyY: -185 },
-  { id: 'p2', src: '/about/photos/photo2.png', initX: -80, initY: -160, rot: 5, tidyX: -120, tidyY: -170, mobileInitX: 55, mobileInitY: -165, mobileRot: 11, mobileTidyX: -50, mobileTidyY: -185 },
-  { id: 'p3', src: '/about/photos/photo3.png', initX: 180, initY: -140, rot: 15, tidyX: 120, tidyY: -170, mobileInitX: -35, mobileInitY: -55, mobileRot: 22, mobileTidyX: 50, mobileTidyY: -185 },
-  { id: 'p4', src: '/about/photos/photo4.png', initX: 340, initY: -80, rot: -8, tidyX: 360, tidyY: -170, mobileInitX: 125, mobileInitY: -230, mobileRot: -9, mobileTidyX: 150, mobileTidyY: -185 },
-  { id: 'p5', src: '/about/photos/photo5.png', initX: -290, initY: 150, rot: 20, tidyX: -360, tidyY: 170, mobileInitX: -140, mobileInitY: 70, mobileRot: 16, mobileTidyX: -150, mobileTidyY: 185 },
-  { id: 'p6', src: '/about/photos/photo6.png', initX: -40, initY: 180, rot: -5, tidyX: -120, tidyY: 170, mobileInitX: 80, mobileInitY: 200, mobileRot: -14, mobileTidyX: -50, mobileTidyY: 185 },
-  { id: 'p7', src: '/about/photos/photo7.png', initX: 220, initY: 160, rot: 8, tidyX: 120, tidyY: 170, mobileInitX: -70, mobileInitY: 145, mobileRot: 7, mobileTidyX: 50, mobileTidyY: 185 },
-  { id: 'p8', src: '/about/photos/photo8.png', initX: 360, initY: 120, rot: -14, tidyX: 360, tidyY: 170, mobileInitX: 135, mobileInitY: 55, mobileRot: -21, mobileTidyX: 150, mobileTidyY: 185 },
+  // Scatter init from main. Tidy pitch > max card width so photos never overlap.
+  // Cards use clamp(~100px, vw, ~200px); desktop tidy pitch 280px, mobile 120px.
+  { id: 'p1', src: '/about/photos/photo1.png', initX: -320, initY: -120, rot: -12, tidyX: -420, tidyY: -220, mobileInitX: -118, mobileInitY: -210, mobileRot: -18, mobileTidyX: -180, mobileTidyY: -200 },
+  { id: 'p2', src: '/about/photos/photo2.png', initX: -80, initY: -160, rot: 5, tidyX: -140, tidyY: -220, mobileInitX: 55, mobileInitY: -165, mobileRot: 11, mobileTidyX: -60, mobileTidyY: -200 },
+  { id: 'p3', src: '/about/photos/photo3.png', initX: 180, initY: -140, rot: 15, tidyX: 140, tidyY: -220, mobileInitX: -35, mobileInitY: -55, mobileRot: 22, mobileTidyX: 60, mobileTidyY: -200 },
+  { id: 'p4', src: '/about/photos/photo4.png', initX: 340, initY: -80, rot: -8, tidyX: 420, tidyY: -220, mobileInitX: 125, mobileInitY: -230, mobileRot: -9, mobileTidyX: 180, mobileTidyY: -200 },
+  { id: 'p5', src: '/about/photos/photo5.png', initX: -290, initY: 150, rot: 20, tidyX: -420, tidyY: 220, mobileInitX: -140, mobileInitY: 70, mobileRot: 16, mobileTidyX: -180, mobileTidyY: 200 },
+  { id: 'p6', src: '/about/photos/photo6.png', initX: -40, initY: 180, rot: -5, tidyX: -140, tidyY: 220, mobileInitX: 80, mobileInitY: 200, mobileRot: -14, mobileTidyX: -60, mobileTidyY: 200 },
+  { id: 'p7', src: '/about/photos/photo7.png', initX: 220, initY: 160, rot: 8, tidyX: 140, tidyY: 220, mobileInitX: -70, mobileInitY: 145, mobileRot: 7, mobileTidyX: 60, mobileTidyY: 200 },
+  { id: 'p8', src: '/about/photos/photo8.png', initX: 360, initY: 120, rot: -14, tidyX: 420, tidyY: 220, mobileInitX: 135, mobileInitY: 55, mobileRot: -21, mobileTidyX: 180, mobileTidyY: 200 },
 ];
 
 // --- UNIVERSAL PHYSICS DRAGGABLE COMPONENT ---
@@ -161,7 +161,7 @@ const DraggableItem = ({ item, setTopIndex, baseZ, isTidy }) => {
       className="absolute top-1/2 left-1/2 p-2 sm:p-3 bg-[#FAFAFA] shadow-lg border border-[#DCD9CE] touch-none cursor-grab"
       style={{
         zIndex,
-        width: 'clamp(96px, 26vw, 200px)',
+        width: 'clamp(96px, 26vw, 170px)',
         transformOrigin: 'center center'
       }}
     >
