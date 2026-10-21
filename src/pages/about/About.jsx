@@ -2,16 +2,16 @@ import React, { useState, useRef, useEffect } from 'react';
 
 // --- DATA: 8 Photographs without forced ratios or titles ---
 const scatterItems = [
-  // Scatter: irregular. Tidy: 2×4 grid — spacing must exceed card width
-  // (cards use clamp(100px, 28vw, 220px)). mobile* only below 768px.
-  { id: 'p1', src: '/about/photos/photo1.png', initX: -320, initY: -120, rot: -12, tidyX: -390, tidyY: -210, mobileInitX: -95, mobileInitY: -188, mobileTidyX: -168, mobileTidyY: -175 },
-  { id: 'p2', src: '/about/photos/photo2.png', initX: -80, initY: -160, rot: 5, tidyX: -130, tidyY: -210, mobileInitX: 12, mobileInitY: -205, mobileTidyX: -56, mobileTidyY: -175 },
-  { id: 'p3', src: '/about/photos/photo3.png', initX: 180, initY: -140, rot: 15, tidyX: 130, tidyY: -210, mobileInitX: -55, mobileInitY: -95, mobileTidyX: 56, mobileTidyY: -175 },
-  { id: 'p4', src: '/about/photos/photo4.png', initX: 340, initY: -80, rot: -8, tidyX: 390, tidyY: -210, mobileInitX: 108, mobileInitY: -160, mobileTidyX: 168, mobileTidyY: -175 },
-  { id: 'p5', src: '/about/photos/photo5.png', initX: -290, initY: 150, rot: 20, tidyX: -390, tidyY: 210, mobileInitX: -125, mobileInitY: 85, mobileTidyX: -168, mobileTidyY: 175 },
-  { id: 'p6', src: '/about/photos/photo6.png', initX: -40, initY: 180, rot: -5, tidyX: -130, tidyY: 210, mobileInitX: 45, mobileInitY: 175, mobileTidyX: -56, mobileTidyY: 175 },
-  { id: 'p7', src: '/about/photos/photo7.png', initX: 220, initY: 160, rot: 8, tidyX: 130, tidyY: 210, mobileInitX: -10, mobileInitY: 115, mobileTidyX: 56, mobileTidyY: 175 },
-  { id: 'p8', src: '/about/photos/photo8.png', initX: 360, initY: 120, rot: -14, tidyX: 390, tidyY: 210, mobileInitX: 130, mobileInitY: 95, mobileTidyX: 168, mobileTidyY: 175 },
+  // Desktop init/tidy match main. mobile* used only below 768px.
+  // Mobile scatter is irregular; mobile tidy is a non-overlapping 2×4 grid.
+  { id: 'p1', src: '/about/photos/photo1.png', initX: -320, initY: -120, rot: -12, tidyX: -360, tidyY: -170, mobileInitX: -118, mobileInitY: -210, mobileRot: -18, mobileTidyX: -150, mobileTidyY: -185 },
+  { id: 'p2', src: '/about/photos/photo2.png', initX: -80, initY: -160, rot: 5, tidyX: -120, tidyY: -170, mobileInitX: 55, mobileInitY: -165, mobileRot: 11, mobileTidyX: -50, mobileTidyY: -185 },
+  { id: 'p3', src: '/about/photos/photo3.png', initX: 180, initY: -140, rot: 15, tidyX: 120, tidyY: -170, mobileInitX: -35, mobileInitY: -55, mobileRot: 22, mobileTidyX: 50, mobileTidyY: -185 },
+  { id: 'p4', src: '/about/photos/photo4.png', initX: 340, initY: -80, rot: -8, tidyX: 360, tidyY: -170, mobileInitX: 125, mobileInitY: -230, mobileRot: -9, mobileTidyX: 150, mobileTidyY: -185 },
+  { id: 'p5', src: '/about/photos/photo5.png', initX: -290, initY: 150, rot: 20, tidyX: -360, tidyY: 170, mobileInitX: -140, mobileInitY: 70, mobileRot: 16, mobileTidyX: -150, mobileTidyY: 185 },
+  { id: 'p6', src: '/about/photos/photo6.png', initX: -40, initY: 180, rot: -5, tidyX: -120, tidyY: 170, mobileInitX: 80, mobileInitY: 200, mobileRot: -14, mobileTidyX: -50, mobileTidyY: 185 },
+  { id: 'p7', src: '/about/photos/photo7.png', initX: 220, initY: 160, rot: 8, tidyX: 120, tidyY: 170, mobileInitX: -70, mobileInitY: 145, mobileRot: 7, mobileTidyX: 50, mobileTidyY: 185 },
+  { id: 'p8', src: '/about/photos/photo8.png', initX: 360, initY: 120, rot: -14, tidyX: 360, tidyY: 170, mobileInitX: 135, mobileInitY: 55, mobileRot: -21, mobileTidyX: 150, mobileTidyY: 185 },
 ];
 
 // --- UNIVERSAL PHYSICS DRAGGABLE COMPONENT ---
@@ -61,7 +61,8 @@ const DraggableItem = ({ item, setTopIndex, baseZ, isTidy }) => {
       rot.current = 0;
     } else {
       offset.current = pickPos('scatter');
-      rot.current = item.rot;
+      const mobile = typeof window !== 'undefined' && window.innerWidth < 768;
+      rot.current = mobile && item.mobileRot != null ? item.mobileRot : item.rot;
     }
     
     updateStyle();

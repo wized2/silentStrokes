@@ -22,7 +22,7 @@ const getWireY = (x, wireIndex, mobile = false) => {
 // x positions of the five frames along the wall. Desktop keeps the original
 // asymmetric spread; on narrow screens frames are staggered with more breathing room.
 const DESKTOP_XS = [35, 50, 65, 80, 92];
-const MOBILE_XS = [10, 28, 46, 64, 82];
+const MOBILE_XS = [5, 23, 41, 59, 76];
 
 const buildFrames = (xs, mobile = false) => [
   { id: 1, img: "/artworks/comission3.png", x: xs[0], y: getWireY(xs[0], 0, mobile), rot: -4, z: 10, isInspecting: false },

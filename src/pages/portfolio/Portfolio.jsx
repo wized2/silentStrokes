@@ -44,9 +44,9 @@ const Portfolio = () => {
   // otherwise identical.
   // Mobile: slightly smaller radius + tighter angular spacing so pieces sit closer
   // without changing desktop geometry.
-  const radius = isMobile ? 1550 : 3200;
-  const angleSpacing = isMobile ? 11 : 15;
-  const rowOffsetPx = isMobile ? 200 : 450;
+  const radius = isMobile ? 1380 : 3200;
+  const angleSpacing = isMobile ? 8.5 : 15;
+  const rowOffsetPx = isMobile ? 170 : 450;
 
   // The artworks occupy one arc of the cylinder. Tiling that arc around the full
   // 360° means panning past the last piece wraps back to the first instead of
@@ -108,7 +108,7 @@ const Portfolio = () => {
   let targetRotX = mouse.y * 3 * parallax;
 
   // Pushing the camera physically closer to the walls by default
-  let targetZ = isMobile ? 900 : 1200;
+  let targetZ = isMobile ? 1100 : 1200;
   let targetY = 0;
 
   if (isFocused) {
@@ -117,7 +117,7 @@ const Portfolio = () => {
     targetRotX = 0;
 
     // Zoom drops you right in front of the massive canvas
-    targetZ = isMobile ? 1950 : 2600;
+    targetZ = isMobile ? 2100 : 2600;
     targetY = isTopRow ? rowOffsetPx : -rowOffsetPx;
   }
 
